@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Home</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-aFq/bzH65dt+w6FI2ooMVUpc+21e0SRygnTpmBvdBgSdnuTN7QbdgL+OapgHtvPp" crossorigin="anonymous">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.7.14/dist/vue.js"></script>
+    <script src="https://unpkg.com/vue-router@3/dist/vue-router.js"></script>
+    <style>
+        .center {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+        }
+
+        .bottom {
+            top: 100%;
+        }
+
+    </style>
+</head>
+
+<body>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-qKXV1j0HvMUeCBQ+QVp7JcfGl760yU08IQ+GpUo5hlbpg51QRiuqHAJz8+BrxE/N"
+        crossorigin="anonymous"></script>
+    <div id="app">
+        
+    <nav class="navbar navbar-dark bg-primary">
+        <!-- Navbar content -->
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/home?error=0&city=None&tags=None&rating=0">Ticket Show</a>
+            <a class="navbar-brand" href="/mybookings?error=1">My Bookings</a>
+            <a class="navbar-brand" href="/logout">Logout</a>
+        </div>
+    </nav>
+    <div class="btn-group">
+        <strong>Filters -></strong>
+        <!-- City Search -->
+        <button type="button" class="btn btn-warning dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+          City
+        </button>
+        <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="/home?error=0&city=None&tags={{tags_chosen}}&rating={{rating_chosen}}">None</a></li>
+            {% for city in city_search %}
+          <li><a class="dropdown-item" href="/home?error=0&city={{city}}&tags={{tags_chosen}}&rating={{rating_chosen}}">{{ city }} </a></li>
+           {% endfor %}
+           
+        </ul>
+        <button type="button" class="btn btn-info dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+            Type
+          </button>
+          <!-- Tags Search -->
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="/home?error=0&city={{city_chosen}}&tags=None&rating={{rating_chosen}}">None</a></li>
+            {% for tags in tags_search %}
+            <li><a class="dropdown-item" href="/home?error=0&city={{city_chosen}}&tags={{tags}}&rating={{rating_chosen}}">{{ tags }}</a></li>
+            {% endfor %}
+          </ul>
+
+          <button type="button" class="btn btn-success dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+            Rating
+          </button>
+          <!-- Rating Search -->
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="/home?error=0&city={{city_chosen}}&tags={{tags}}&rating=0">>0</a></li>
+            <li><a class="dropdown-item" href="/home?error=0&city={{city_chosen}}&tags={{tags}}&rating=3.5">>3.5</a></li>
+            <li><a class="dropdown-item" href="/home?error=0&city={{city_chosen}}&tags={{tags}}&rating=4">>4</a></li>
+            <li><a class="dropdown-item" href="/home?error=0&city={{city_chosen}}&tags={{tags}}&rating=4.5">>4.5</a></li>
+          </ul>
+      </div>
+    <h4>Welcome {{name}}</h4>
+    {% if error == 1 %}
+    <div class="alert alert-danger d-flex align-items-center" role="alert">
+        <div>
+            <strong> Booking Failed! </strong>Number of seats booked exceeds available seats.
+        </div>
+    </div>
+    {% elif error == 2 %}
+    <div class="alert alert-success d-flex align-items-center" role="alert">
+        <div>
+            <strong> Booking Successful! </strong>Enjoy!
+        </div>
+    </div>
+    {% endif %}
+
+    {% if venuesExist > 0%}
+
+    <list_venues> </list_venues>
+    
+    {% else %}
+    <h5>There are no venues available at the moment.</h5>
+    {% endif %}
+    </div>
+</body>
+
+<script type="text/javascript" src="static/js/userhome.js"></script>
+
+<script>
+    function setLink(){
+        console.log("1")
+        window.location.href="localhost:5000/home?error=2&city=None&tags=None&rating=0";
+    }
+    function setTimer(objButton) {
+        let val = objButton.value;
+        // Set the date we're counting down to
+        var countDownDate = new Date().getTime();
+        var newDateObj = new Date(countDownDate + 1 * 60000); //Change Timer Minutes Here.
+        // Update the count down every 1 second
+        var x = setInterval(function () {
+
+            // Get today's date and time
+            var now = new Date().getTime();
+
+            // Find the distance between now and the count down date
+            var distance = newDateObj - now;
+
+            // Time calculations for days, hours, minutes and seconds
+            var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+            tt = val + "demo"
+            // Display the result in the element with id="demo"
+            document.getElementById(tt).innerHTML = "Time Remaining " + minutes + "m " + seconds + "s ";
+
+            // If the count down is finished, write some text
+            if (distance < 0) {
+                clearInterval(x);
+
+                document.getElementById(tt).innerHTML = "EXPIRED";
+            }
+
+            if (document.getElementById(tt).innerHTML == "EXPIRED") {
+                window.location.reload()
+            }
+        }, 1000);
+    }
+
+    
+    function setAmount(objButton) {
+        let val = objButton.value;
+        let dd = objButton.innerHTML;
+        let id = val + "total_amount"
+        let id2 = val + "price"
+        let id3 = val + "seats"
+        console.log(id)
+        console.log(id2)
+        let btn = document.getElementById(id);
+        let amount = document.getElementById(id2);
+        btn.value = dd * amount.value;
+
+        let seats = document.getElementById(id3)
+        seats.value = dd
+    }
+</script>
+
+</html>

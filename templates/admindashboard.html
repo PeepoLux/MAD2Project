@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Home</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-aFq/bzH65dt+w6FI2ooMVUpc+21e0SRygnTpmBvdBgSdnuTN7QbdgL+OapgHtvPp" crossorigin="anonymous">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+    <style>
+        .center {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+        }
+
+        .bottom {
+            top: 100%;
+        }
+
+    </style>
+</head>
+
+<body>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-qKXV1j0HvMUeCBQ+QVp7JcfGl760yU08IQ+GpUo5hlbpg51QRiuqHAJz8+BrxE/N"
+        crossorigin="anonymous"></script>
+    <nav class="navbar navbar-dark bg-primary">
+        <!-- Navbar content -->
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/admindashboard">Ticket Show</a>
+            <a class="navbar-brand" href="/logout">Logout</a>
+        </div>
+
+    </nav>
+
+
+    <div class="venue-button center">
+        <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#exampleModal1">
+            Add Venue
+        </button>
+        <div class="modal fade" id="exampleModal1" tabindex="-1" aria-labelledby="exampleModalLabel1"
+            aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="exampleModalLabel1">Venue Details</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+
+                    <form method="POST" action="/addvenue">
+
+                        <div class="form-outline mb-4">
+                            <input type="text" name="name" id="form3example3" class="form-control form-control-lg"
+                                placeholder="Enter a name for the venue" />
+                        </div>
+                        <div class="form-outline mb-4">
+                            <input type="text" name="place" id="form3example3" class="form-control form-control-lg"
+                                placeholder="Enter the landmark of the venue" />
+                        </div>
+
+                        <div class="form-outline mb-4">
+                            <input type="text" name="city" id="form3example3" class="form-control form-control-lg"
+                                placeholder="Enter the city where the venue is" />
+                        </div>
+
+                        <div class="form-outline mb-3">
+                            <input type="number" step="1" pattern="\d+" name="capacity" id="form3example4"
+                                class="form-control form-control-lg" placeholder="Enter capacity of the venue" />
+                        </div>
+
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">No</button>
+                            <button v-on:click="delete_post" class="btn btn-success">Yes</button>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+    {% if venuesExist > 0%}
+    {% for venue in output %}
+    <div class="container">
+
+        <div class="card mb-2 p-2">
+            <div class="card-body">
+                <h5 class="card-title">{{ venue[0] }}</h5>
+                <b>Place: </b>
+                <h7 class="card-title ">{{ venue[1] }}</h7>
+                <br>
+                <b>City: </b>
+                <h7 class="card-title ">{{ venue[2] }}</h7>
+                <br>
+                <b>Capacity: </b>
+                <h7 class="card-title ">{{ venue[3] }}</h7>
+                <br>
+
+
+                <div class="center">
+                    <button type="button" class="btn btn-warning" data-bs-toggle="modal"
+                        data-bs-target="#example{{venue[4]}}Modal3">
+                        Edit Venue
+                    </button>
+
+                    <!-- Modal -->
+                    <div class="modal fade" id="example{{venue[4]}}Modal3" tabindex="-1"
+                        aria-labelledby="exampleModalLabel3" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h1 class="modal-title fs-5" id="exampleModalLabel3">Are you sure you want to make this change?
+                                    </h1>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                                    </button>
+                                </div>
+                                <form method="POST" action="/editvenue">
+                                    <input type="hidden" value={{venue[4]}} name="venue_id" />
+                                    <div class="form-outline mb-4">
+                                        <input type="text" name="name" value="{{ venue[0] }}" id="form3example4"
+                                            class="form-control form-control-lg"
+                                            placeholder="Enter a name for the venue" />
+                                    </div>
+                                    <div class="form-outline mb-4">
+                                        <input type="text" name="place" value="{{ venue[1] }}" id="form3example4"
+                                            class="form-control form-control-lg"
+                                            placeholder="Enter the landmark of the venue" />
+                                    </div>
+
+                                    <div class="form-outline mb-4">
+                                        <input type="text" name="city" value="{{ venue[2] }}" id="form3example4"
+                                            class="form-control form-control-lg"
+                                            placeholder="Enter the city where the venue is" />
+                                    </div>
+
+                                    <div class="form-outline mb-3">
+                                        <input type="number" value="{{ venue[3] }}" step="1" pattern="\d+"
+                                            name="capacity" id="form3example4" class="form-control form-control-lg"
+                                            placeholder="Enter capacity of the venue" />
+                                    </div>
+
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">No</button>
+                                        <button v-on:click="delete_post" class="btn btn-success">Yes</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="center">
+                    <button type="button" class="btn btn-danger" data-bs-toggle="modal"
+                        data-bs-target="#exampledelete{{venue[4]}}Modal4">
+                        Delete Venue
+                    </button>
+
+                    <!-- Modal -->
+                    <div class="modal fade" id="exampledelete{{venue[4]}}Modal4" tabindex="-1"
+                        aria-labelledby="exampleModalLabel4" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h1 class="modal-title fs-5" id="exampleModalLabel4">This action cannot be undone
+                                    </h1>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
+                                </div>
+                                <form method="POST" action="/deletevenue">
+                                    <input type="hidden" value={{venue[4]}} name="venue_id" />
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">No</button>
+                                        <button v-on:click="delete_post" class="btn btn-success">Yes</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            
+            <div class="venue-button">
+                <button type="button" class="btn btn-info mb-2 ml-2" data-bs-toggle="modal"
+                    data-bs-target="#show{{venue[4]}}Modal2">
+                    Add Show
+                </button>
+                <div class="modal fade" id="show{{venue[4]}}Modal2" tabindex="-1"
+                    aria-labelledby="exampleModalLabel2" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h1 class="modal-title fs-5" id="exampleModalLabel2">Show Details</h1>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
+                            </div>
+                            <form method="POST" action="/addshow">
+
+                                <div class="form-outline mb-4">
+                                    <input type="text" name="name" id="form3example5"
+                                        class="form-control form-control-lg" placeholder="Show Name" />
+                                </div>
+                                <div class="form-outline mb-4">
+                                    <input type="text" name="tags" id="form3example5"
+                                        class="form-control form-control-lg" placeholder="Show Tags" />
+                                </div>
+
+                                <div class="form-outline mb-4">
+                                    <input type="number" name="price" id="form3example5"
+                                        class="form-control form-control-lg" placeholder="Show Price" />
+                                </div>
+
+                                <div class="form-outline mb-4">
+                                    <input type="number" name="rating" step=".1" id="form3example5"
+                                        class="form-control form-control-lg" placeholder="Show Rating" />
+                                </div>
+
+                                <div class="form-outline mb-4">
+                                    <input type=time step="30" name="start" id="form3example5"
+                                        class="form-control form-control-lg" placeholder="Show Start" />
+                                </div>
+
+                                <div class="form-outline mb-4">
+                                    <input type=time step="30" name="end" id="form3example5"
+                                        class="form-control form-control-lg" placeholder="Show End" />
+                                </div>
+
+                                <input type="hidden" value={{venue[4]}} name="venue_id" />
+
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">No</button>
+                                    <button v-on:click="delete_post" class="btn btn-success">Yes</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% if venue[5] > 0 %}
+
+            <p>
+                <button class="btn btn-primary ml-2" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#collapse{{venue[4]}}WidthExample" aria-expanded="false"
+                    aria-controls="collapse{{venue[4]}}WidthExample">
+                    View Shows
+                </button>
+            </p>
+            <div>
+                <div class="collapse collapse-horizontal" id="collapse{{venue[4]}}WidthExample">
+                    <div class="container text-center">
+                        <div class="row">
+                            {% for show in venue[6] %}
+
+                            <div class="col">
+                                <div class="card card-body" style="width: 300px;">
+                                    <h5 class="card-title">{{ show[0] }}</h5>
+                                    <b>Tags: </b>
+                                    <h7 class="card-title ">{{ show[1] }}</h7>
+
+                                    <b>Price(in INR): </b>
+                                    <h7 class="card-title ">{{ show[2] }}</h7>
+
+                                    <b>Rating(on 5): </b>
+                                    <h7 class="card-title ">{{ show[3] }}</h7>
+                                    <b>Time: </b>
+                                    <h7 class="card-title ">{{ show[4] }} - {{ show[5] }}</h7>
+
+                                    <div class="center">
+                                        <button type="button" class="btn btn-warning" data-bs-toggle="modal"
+                                            data-bs-target="#exampleedit{{show[6]}}Modal3">
+                                            Edit Show
+                                        </button>
+
+                                        <!-- Modal -->
+                                        <div class="modal fade" id="exampleedit{{show[6]}}Modal3" tabindex="-1"
+                                            aria-labelledby="exampleModalLabel3" aria-hidden="true">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h1 class="modal-title fs-5" id="exampleModalLabel3">This action
+                                                            cannot be undone
+                                                        </h1>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                            aria-label="Close"></button>
+                                                    </div>
+                                                    <form method="POST" action="/editshow">
+                                                        <input type="hidden" value="{{show[6]}}" name="show_id" />
+                                                        <div class="form-outline mb-4">
+                                                            <input type="text" value="{{show[0]}}" name="name" id="form3example5"
+                                                                class="form-control form-control-lg" placeholder="Show Name" />
+                                                        </div>
+                                                        <div class="form-outline mb-4">
+                                                            <input type="text" value="{{show[1]}}" name="tags" id="form3example5"
+                                                                class="form-control form-control-lg" placeholder="Show Tags" />
+                                                        </div>
+                    
+                                                        <div class="form-outline mb-4">
+                                                            <input type="number" value="{{show[2]}}" name="price" id="form3example5"
+                                                                class="form-control form-control-lg" placeholder="Show Price" />
+                                                        </div>
+                    
+                                                        <div class="form-outline mb-4">
+                                                            <input type="number" value="{{show[3]}}" name="rating" step=".1" id="form3example5"
+                                                                class="form-control form-control-lg" placeholder="Show Rating" />
+                                                        </div>
+                    
+                                                        <div class="form-outline mb-4">
+                                                            <input type=time step="30" value="{{show[4]}}" name="start" id="form3example5"
+                                                                class="form-control form-control-lg" placeholder="Show Start" />
+                                                        </div>
+                    
+                                                        <div class="form-outline mb-4">
+                                                            <input type=time step="30" value="{{show[5]}}" name="end" id="form3example5"
+                                                                class="form-control form-control-lg" placeholder="Show End" />
+                                                        </div>
+                    
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">No</button>
+                                                            <button v-on:click="delete_post" class="btn btn-success">Yes</button>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="center">
+                                        <button type="button" class="btn btn-danger" data-bs-toggle="modal"
+                                            data-bs-target="#exampledelete{{show[6]}}Modal3">
+                                            Delete Show
+                                        </button>
+
+                                        <!-- Modal -->
+                                        <div class="modal fade" id="exampledelete{{show[6]}}Modal3" tabindex="-1"
+                                            aria-labelledby="exampleModalLabel3" aria-hidden="true">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h1 class="modal-title fs-5" id="exampleModalLabel3">This action
+                                                            cannot be undone
+                                                        </h1>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                            aria-label="Close"></button>
+                                                    </div>
+                                                    <form method="POST" action="/deleteshow">
+                                                        <input type="hidden" value={{show[6]}} name="show_id" />
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-danger"
+                                                                data-bs-dismiss="modal">No</button>
+                                                            <button v-on:click="delete_post"
+                                                                class="btn btn-success">Yes</button>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {% endfor %}
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+
+            {% else %}
+            <h5>No Shows Exist</h5>
+            {% endif %}
+        </div>
+    </div>
+    {% endfor %}
+    {% endif %}
+    </div>
+
+</body>
+
+</html>
